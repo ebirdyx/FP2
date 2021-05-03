@@ -1,6 +1,9 @@
 package MiniProject;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -68,13 +71,14 @@ public class GUI {
                     try {
                         textPanel.setText(Files.readString(fileName));
                     } catch (IOException ioException) {
-                        JOptionPane.showConfirmDialog(fileChooser,"Cannot read file: "+ selectedFile.getName(),"Error",JOptionPane.DEFAULT_OPTION);
+                        JOptionPane.showConfirmDialog(fileChooser, "Cannot read file: " + selectedFile.getName(), "Error", JOptionPane.DEFAULT_OPTION);
                     }
 
                 }
 
             }
         });
+
 
         saveFileItem.addActionListener(new ActionListener() {
             @Override
@@ -87,12 +91,48 @@ public class GUI {
                     Path fileName = Path.of(selectedFile.toURI());
 
                     try {
-                        Files.writeString(fileName,textPanel.getText());
+                        Files.writeString(fileName, textPanel.getText());
                     } catch (IOException ioException) {
-                        JOptionPane.showConfirmDialog(fileChooser,"Cannot write file: "+ selectedFile.getName(),"Error",JOptionPane.DEFAULT_OPTION);
+                        JOptionPane.showConfirmDialog(fileChooser, "Cannot write file: " + selectedFile.getName(), "Error", JOptionPane.DEFAULT_OPTION);
                     }
 
                 }
+            }
+        });
+
+        searchItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchWord = JOptionPane.showInputDialog("Find: ");
+
+                Highlighter highlighter = textPanel.getHighlighter();
+                Highlighter.HighlightPainter painter =
+                        new DefaultHighlighter.DefaultHighlightPainter(Color.yellow);
+
+
+                try {
+                    int beginIndex = 0;
+                    while (textPanel.getText().indexOf(searchWord,beginIndex) > -1)  //check if there is a match
+                    {
+                        int p0 = textPanel.getText().indexOf(searchWord,beginIndex);
+                        int p1 = p0 + searchWord.length();
+                        highlighter.addHighlight(p0, p1, painter);
+                        beginIndex = p1; // the next time the while loop is called it will start from p1
+                    }
+                } catch (BadLocationException badLocationException) {
+                    badLocationException.printStackTrace();
+                }
+
+
+            }
+        });
+
+        replaceItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchWord = JOptionPane.showInputDialog("Replace: ");
+
+
             }
         });
 

@@ -13,6 +13,35 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class GUI {
+
+    public static void replacePane(JFrame frame, JTextArea textPanel) {
+        JPanel panel = new JPanel();
+
+        panel.setLayout(new GridLayout(0, 2, 2, 2));
+        JTextField findField = new JTextField(5);
+        JTextField replaceField = new JTextField(5);
+        JLabel findLabel = new JLabel("Find: ");
+        JLabel replaceLabel = new JLabel("Replace: ");
+
+        panel.add(findLabel);
+        panel.add(findField);
+        panel.add(replaceLabel);
+        panel.add(replaceField);
+
+        //    ImageIcon icon = new ImageIcon(); //path
+        int option = JOptionPane.showConfirmDialog(frame, panel, "Replace", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.YES_OPTION) {
+            int beginIndex = 0;
+            while (textPanel.getText().indexOf(findField.getText(), beginIndex) > -1) {
+                int match = textPanel.getText().indexOf(findField.getText());
+                int endMatch = match + findField.getText().length();
+
+                textPanel.replaceRange(replaceField.getText(), match, endMatch);
+                beginIndex = endMatch;
+            }
+        }
+    }
+
     public static void main(String args[]) {
         JFileChooser fileChooser = new JFileChooser();
         MorseCode morseCode = new MorseCode();
@@ -112,9 +141,9 @@ public class GUI {
 
                 try {
                     int beginIndex = 0;
-                    while (textPanel.getText().indexOf(searchWord,beginIndex) > -1)  //check if there is a match
+                    while (textPanel.getText().indexOf(searchWord, beginIndex) > -1)  //check if there is a match
                     {
-                        int p0 = textPanel.getText().indexOf(searchWord,beginIndex);
+                        int p0 = textPanel.getText().indexOf(searchWord, beginIndex);
                         int p1 = p0 + searchWord.length();
                         highlighter.addHighlight(p0, p1, painter);
                         beginIndex = p1; // the next time the while loop is called it will start from p1
@@ -122,15 +151,14 @@ public class GUI {
                 } catch (BadLocationException badLocationException) {
                     badLocationException.printStackTrace();
                 }
-
-
             }
         });
 
         replaceItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String searchWord = JOptionPane.showInputDialog("Replace: ");
+
+                replacePane(frame, textPanel);
 
 
             }

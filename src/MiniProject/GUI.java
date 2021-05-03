@@ -48,7 +48,9 @@ public class GUI {
         //Creating the Frame
         JFrame frame = new JFrame("Morse Coding");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(1200, 800);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
 
         //Creating the MenuBar and adding components
         JMenuBar menuBar = new JMenuBar();
@@ -138,6 +140,8 @@ public class GUI {
                 Highlighter.HighlightPainter painter =
                         new DefaultHighlighter.DefaultHighlightPainter(Color.yellow);
 
+                if (searchWord == null)
+                    return;
 
                 try {
                     int beginIndex = 0;

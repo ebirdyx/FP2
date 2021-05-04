@@ -48,14 +48,18 @@ public class GUI {
         SpellChecker spellChecker = new SpellChecker();
 
         //Creating the Frame
-        JFrame frame = new JFrame("Morse Coding");
+        JFrame frame = new JFrame("MiniProject");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 800);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
 
+        Font font = new Font(Font.SERIF,Font.BOLD,32);
+
         //Creating the MenuBar and adding components
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setFont(font);
+
         JMenu fileMenu = new JMenu("File");
         JMenu editMenu = new JMenu("Edit");
         JMenu encryptionMenu = new JMenu("Encryption");
@@ -88,6 +92,7 @@ public class GUI {
 
         // Text Area at the Center
         JTextArea textPanel = new JTextArea();
+        textPanel.setFont(font);
 
         //Adding Components to the frame.
         frame.getContentPane().add(BorderLayout.NORTH, menuBar);

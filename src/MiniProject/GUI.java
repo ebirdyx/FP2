@@ -45,21 +45,25 @@ public class GUI {
     public static void main(String args[]) {
         JFileChooser fileChooser = new JFileChooser();
         MorseCode morseCode = new MorseCode();
+        SpellChecker spellChecker = new SpellChecker();
+
         //Creating the Frame
         JFrame frame = new JFrame("Morse Coding");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 800);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
 
         //Creating the MenuBar and adding components
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         JMenu editMenu = new JMenu("Edit");
         JMenu encryptionMenu = new JMenu("Encryption");
+        JMenu spellCheckerMenu = new JMenu("SpellChecker");
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
         menuBar.add(encryptionMenu);
+        menuBar.add(spellCheckerMenu);
         JMenuItem openFileItem = new JMenuItem("Open");
         JMenuItem saveFileItem = new JMenuItem("Save");
         JMenuItem closeItem = new JMenuItem("Quit");
@@ -76,6 +80,9 @@ public class GUI {
         JMenuItem morseDecodeItem = new JMenuItem("Morse decode");
         encryptionMenu.add(morseEncodeItem);
         encryptionMenu.add(morseDecodeItem);
+
+        JMenuItem checkSpellItem = new JMenuItem("Check spelling");
+        spellCheckerMenu.add(checkSpellItem);
 
         // Text Area at the Center
         JTextArea textPanel = new JTextArea();
@@ -186,6 +193,36 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+
+        checkSpellItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String content = textPanel.getText();
+                String[] words = content.split(" ");
+
+                Highlighter highlighter = textPanel.getHighlighter();
+                Highlighter.HighlightPainter painter =
+                        new DefaultHighlighter.DefaultHighlightPainter(Color.pink);
+
+                int beginIndex = 0;
+
+                for (int i = 0; i < words.length; i++) {
+                    boolean correct = spellChecker.spellCheck(words[i]);
+
+                    if (!correct) {
+                        //highlight the misspelled words
+                        try {
+                            highlighter.addHighlight(beginIndex, beginIndex + words[i].length(), painter);
+                        } catch (BadLocationException badLocationException) {
+                            badLocationException.printStackTrace();
+                        }
+                    }
+
+                    beginIndex += words[i].length() + 1;  // account for the space when we split
+                }
+
             }
         });
     }

@@ -27,17 +27,6 @@ public class SpellChecker {
         s.close();
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        SpellChecker spellChecker = new SpellChecker();
-        System.out.println(spellChecker.spellCheck("hi"));
-//        for (int i = 0; i < spellChecker.wordList.size() ; i++){
-//            System.out.println(spellChecker.wordList.get(i));
-//
-//        }
-
-    }
-
-
     public boolean spellCheck(String word) {
         for (int i = 0; i < wordList.size(); i++) {
             if (wordList.get(i).toLowerCase(Locale.ROOT).equals(word.toLowerCase(Locale.ROOT)))
@@ -45,6 +34,4 @@ public class SpellChecker {
         }
         return false;
     }
-
-
 }

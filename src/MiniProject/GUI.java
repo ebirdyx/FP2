@@ -73,8 +73,10 @@ public class GUI {
 
         JMenuItem searchItem = new JMenuItem("Search");
         JMenuItem replaceItem = new JMenuItem("Replace");
+        JMenuItem removeHighlightItem = new JMenuItem("Remove highlight");
         editMenu.add(searchItem);
         editMenu.add(replaceItem);
+        editMenu.add(removeHighlightItem);
 
         JMenuItem morseEncodeItem = new JMenuItem("Morse Encode");
         JMenuItem morseDecodeItem = new JMenuItem("Morse decode");
@@ -149,7 +151,7 @@ public class GUI {
 
                 if (searchWord == null)
                     return;
-
+                                          //TODO change to regex
                 try {
                     int beginIndex = 0;
                     while (textPanel.getText().indexOf(searchWord, beginIndex) > -1)  //check if there is a match
@@ -168,9 +170,7 @@ public class GUI {
         replaceItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 replacePane(frame, textPanel);
-
 
             }
         });
@@ -222,6 +222,16 @@ public class GUI {
 
                     beginIndex += words[i].length() + 1;  // account for the space when we split
                 }
+
+            }
+        });
+
+        removeHighlightItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Highlighter highlighter = textPanel.getHighlighter();
+                highlighter.removeAllHighlights();
 
             }
         });
